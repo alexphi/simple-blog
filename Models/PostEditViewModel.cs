@@ -25,7 +25,6 @@ namespace Alejof.SimpleBlog.Models
             Title = this.Title,
             Content = this.Content,
             Author = this.Author,
-            UpdatedDate = DateTime.Now,
         };
     }
 }

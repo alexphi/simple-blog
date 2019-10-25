@@ -1,0 +1,30 @@
+﻿@model PostEditViewModel
+
+@{
+    ViewData["Title"] = "Review Post";
+}
+
+<div class="text-center">
+    <h1 class="display-4">AlejoF Simple Blog</h1>
+    <p>Review Post</p>
+</div>
+
+<div class="container my-5 text-left">
+    <h2>@Model.Title</h2>
+    <p class="small">By @Model.Author, Last updated @Model.UpdatedDate</p>
+
+    <div class="my-3">
+        <pre>@Model.Content</pre>
+    </div>
+</div>
+
+<div class="container my-5 text-left">
+    <p>Do you want to approve this post?</p>
+    <form asp-action="PostApprove" asp-route-slug="@Model.Slug" method="post" class="d-inline-block">
+        <input type="submit" class="btn btn-primary" value="Approve">
+    </form>
+    <form asp-action="PostReject" asp-route-slug="@Model.Slug" method="post" class="d-inline-block">
+        <input type="submit" class="btn btn-danger" value="Reject">
+    </form>
+    <a asp-action="Index" class="btn btn-warning">Back</a>
+</div>

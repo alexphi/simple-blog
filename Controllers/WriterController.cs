@@ -67,5 +67,31 @@ namespace Alejof.SimpleBlog.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
+        [HttpGet, Route("edit/{slug?}/publish")]
+        public async Task<IActionResult> Publish([FromRoute]string slug)
+        {
+            var post = await _postService.GetPost(slug);
+            if (post == null) return NotFound();
+
+            return View(PostEditViewModel.FromModel(post));
+        }
+
+        [HttpPost, Route("edit/{slug?}/publish")]
+        public async Task<IActionResult> PostPublish([FromRoute]string slug)
+        {
+            var post = await _postService.GetPost(slug);
+            if (post == null) return NotFound();
+
+            post.Status = Services.Models.PostStatus.Pending;
+
+            var result = await _postService.SavePost(post);
+            if (!result.Success)
+            {
+                // TODO: Show result.Error;
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

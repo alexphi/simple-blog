@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -34,6 +35,7 @@ namespace Alejof.SimpleBlog.Services.Impl
             if (oldPost != null)
                 posts.Remove(oldPost);
 
+            post.UpdatedDate = DateTime.Now;
             posts.Add(post);
 
             await this.UpdateContent(posts);

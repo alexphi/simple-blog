@@ -33,5 +33,49 @@ namespace Alejof.SimpleBlog.Controllers
                     .OrderByDescending(c => c.UpdatedDate)
                     .Select(p => Models.PostIndexViewModel.FromModel(p)));
         }
+
+        [HttpGet, Route("review/{slug?}")]
+        public async Task<IActionResult> Review([FromRoute]string slug)
+        {
+            var post = await _postService.GetPost(slug);
+            if (post == null) return NotFound();
+
+            return View(PostEditViewModel.FromModel(post));
+        }
+
+        [HttpPost, Route("review/{slug?}/approve")]
+        public async Task<IActionResult> PostApprove([FromRoute]string slug)
+        {
+            var post = await _postService.GetPost(slug);
+            if (post == null) return NotFound();
+
+            post.Status = Services.Models.PostStatus.Published;
+            post.ApprovalDate = DateTime.Now;
+
+            var result = await _postService.SavePost(post);
+            if (!result.Success)
+            {
+                // TODO: Show result.Error;
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost, Route("review/{slug?}/reject")]
+        public async Task<IActionResult> PostReject([FromRoute]string slug)
+        {
+            var post = await _postService.GetPost(slug);
+            if (post == null) return NotFound();
+
+            post.Status = Services.Models.PostStatus.Draft;
+
+            var result = await _postService.SavePost(post);
+            if (!result.Success)
+            {
+                // TODO: Show result.Error;
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

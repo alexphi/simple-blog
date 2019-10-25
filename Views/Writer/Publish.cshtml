@@ -1,0 +1,27 @@
+﻿@model PostEditViewModel
+
+@{
+    ViewData["Title"] = "Publish Post";
+}
+
+<div class="text-center">
+    <h1 class="display-4">AlejoF Simple Blog</h1>
+    <p>Publish Post</p>
+</div>
+
+<div class="container my-5 text-left">
+    <h2>@Model.Title</h2>
+    <p class="small">By @Model.Author, Last updated @Model.UpdatedDate</p>
+
+    <div class="my-3">
+        <pre>@Model.Content</pre>
+    </div>
+</div>
+
+<div class="container my-5 text-left">
+    <p>Are you sure you want to publish this post?</p>
+    <form asp-action="PostPublish" method="post" asp-route-slug="@Model.Slug">
+        <input type="submit" class="btn btn-primary" value="Yes">
+        <a asp-action="Index" class="btn btn-warning">No</a>
+    </form>
+</div>

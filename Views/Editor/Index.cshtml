@@ -19,9 +19,7 @@
                 <p class="card-text"><pre>@post.Content</pre></p>
 
                 <a asp-action="Detail" asp-controller="Home" asp-route-slug="@post.Slug">Read more</a>
-
-                <a asp-action="Aprove" asp-route-slug="@post.Slug" class="d-inline-block mx-3">Approve</a>
-                <a asp-action="Reject" asp-route-slug="@post.Slug" class="d-inline-block mx-3">Reject</a>
+                <a asp-action="Review" asp-route-slug="@post.Slug" class="d-inline-block mx-3">Review</a>
             </div>
         </div>
     }
