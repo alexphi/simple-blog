@@ -9,5 +9,6 @@ namespace Alejof.SimpleBlog.Services
 
         Task<Models.Post> GetPost(string slug);
         Task<(bool Success, string Error)> SavePost(Models.Post post);
+        Task<(bool Success, string Error)> AddComment(string slug, Models.Comment comment);
     }
 }

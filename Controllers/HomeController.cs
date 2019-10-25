@@ -28,7 +28,9 @@ namespace Alejof.SimpleBlog.Controllers
             var posts = await _postService.GetPosts();
 
             return View(
-                posts.Select(p => Models.PostIndexViewModel.FromModel(p)));
+                posts
+                    .OrderByDescending(c => c.UpdatedDate)
+                    .Select(p => Models.PostIndexViewModel.FromModel(p)));
         }
 
         [HttpGet, Route("post/{slug}")]
@@ -69,7 +71,25 @@ namespace Alejof.SimpleBlog.Controllers
                 // TODO: Show result.Error;
             }
 
-            return RedirectToAction(nameof(Index));
+            return Redirect("/");
+        }
+
+        [HttpPost, Route("comment/{slug?}")]
+        public async Task<IActionResult> PostComment([FromRoute]string slug, [FromForm]PostCommentViewModel commentModel)
+        {
+            if (!string.IsNullOrEmpty(slug))
+            {
+                var post = await _postService.GetPost(slug);
+                if (post == null) return NotFound();
+            }
+
+            var result = await _postService.AddComment(slug, commentModel.AsModel());
+            if (!result.Success)
+            {
+                // TODO: Show result.Error;
+            }
+
+            return Redirect($"/post/{slug}");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

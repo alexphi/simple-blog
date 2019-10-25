@@ -17,5 +17,43 @@
         <pre>@Model.Content</pre>
     </div>
 
+    <h3>Comments</h3>
+
+    @foreach (var comment in Model.Comments)
+    {
+        <div class="card my-3">
+            <div class="card-header">
+                @comment.Date
+            </div>
+            <div class="card-body">
+                <p class="card-title">@comment.Author</p>
+                <p class="small">@comment.Email</p>
+                <p class="card-text"><pre>@comment.Content</pre></p>
+            </div>
+        </div>
+    }
+    <div class="card my-3">
+        <div class="card-header">
+            Post new comment
+        </div>
+        <div class="card-body">
+            <form asp-action="PostComment" asp-route-slug="@Model.Slug">
+                <div class="form-group">
+                    <label for="Author">Name</label>
+                    <input type="text" class="form-control" name="Author" placeholder="Your Name">
+                </div>
+                <div class="form-group">
+                    <label for="Email">Email</label>
+                    <input type="email" class="form-control" name="Email" placeholder="Your Email">
+                </div>
+                <div class="form-group">
+                    <label for="Content">Content</label>
+                    <textarea class="form-control" name="Content" placeholder="Post Content" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Post Comment</button>
+            </form>
+        </div>
+    </div>
+
     <a asp-action="Index">Go back</a>
 </div>

@@ -39,5 +39,23 @@ namespace Alejof.SimpleBlog.Services.Impl
             await this.UpdateContent(posts);
             return (true, null);
         }
+
+        public async Task<(bool Success, string Error)> AddComment(string slug, Comment comment)
+        {
+            var posts = await this.GetPosts();
+            var post = posts
+                .FirstOrDefault(p => p.Slug == slug);
+
+            if (post == null)
+                return (false, "Post not found");
+
+            if (post.Comments == null)
+                post.Comments = new List<Comment>();
+                
+            post.Comments.Add(comment);
+
+            await this.UpdateContent(posts);
+            return (true, null);
+        }
     }
 }
