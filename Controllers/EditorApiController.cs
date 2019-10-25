@@ -9,41 +9,33 @@ using Microsoft.Extensions.Logging;
 
 namespace Alejof.SimpleBlog.Controllers
 {
-    public class EditorController : Controller
+    [Route("api/v1/")]
+    public class EditorApiController : Controller
     {
         private readonly Services.IPostService _postService;
-        private readonly ILogger<EditorController> _logger;
+        private readonly ILogger<HomeController> _logger;
 
-        public EditorController(
+        public EditorApiController(
             Services.IPostService postService,
-            ILogger<EditorController> logger)
+            ILogger<HomeController> logger)
         {
             _postService = postService;
             _logger = logger;
         }
 
-        [HttpGet]
+        [HttpGet, Route("posts")]
         public async Task<IActionResult> Index()
         {
             var posts = await _postService.GetPosts();
 
-            return View(
+            return Ok(
                 posts
                     .Where(p => p.Status == Services.Models.PostStatus.Pending)
                     .OrderByDescending(c => c.UpdatedDate)
-                    .Select(p => Models.PostIndexViewModel.FromModel(p)));
+                    .Select(p => Models.PostEditViewModel.FromModel(p)));
         }
 
-        [HttpGet, Route("review/{slug?}")]
-        public async Task<IActionResult> Review([FromRoute]string slug)
-        {
-            var post = await _postService.GetPost(slug);
-            if (post == null) return NotFound();
-
-            return View(PostEditViewModel.FromModel(post));
-        }
-
-        [HttpPost, Route("review/{slug?}/approve")]
+        [HttpPost, Route("posts/{slug?}/approve")]
         public async Task<IActionResult> PostApprove([FromRoute]string slug)
         {
             var post = await _postService.GetPost(slug);
@@ -54,14 +46,12 @@ namespace Alejof.SimpleBlog.Controllers
 
             var result = await _postService.SavePost(post);
             if (!result.Success)
-            {
-                // TODO: Show result.Error;
-            }
+                return this.UnprocessableEntity();
 
-            return RedirectToAction(nameof(Index));
+            return Ok();
         }
 
-        [HttpPost, Route("review/{slug?}/reject")]
+        [HttpPost, Route("posts/{slug?}/reject")]
         public async Task<IActionResult> PostReject([FromRoute]string slug)
         {
             var post = await _postService.GetPost(slug);
@@ -71,11 +61,9 @@ namespace Alejof.SimpleBlog.Controllers
 
             var result = await _postService.SavePost(post);
             if (!result.Success)
-            {
-                // TODO: Show result.Error;
-            }
+                return this.UnprocessableEntity();
 
-            return RedirectToAction(nameof(Index));
+            return Ok();
         }
     }
 }

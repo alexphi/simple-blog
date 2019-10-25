@@ -12,11 +12,11 @@ namespace Alejof.SimpleBlog.Controllers
     public class WriterController : Controller
     {
         private readonly Services.IPostService _postService;
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<WriterController> _logger;
 
         public WriterController(
             Services.IPostService postService,
-            ILogger<HomeController> logger)
+            ILogger<WriterController> logger)
         {
             _postService = postService;
             _logger = logger;
