@@ -1,0 +1,21 @@
+﻿@model PostDetailViewModel
+
+@{
+    ViewData["Title"] = "Edit Post";
+}
+
+<div class="text-center">
+    <h1 class="display-4">AlejoF Simple Blog</h1>
+    <p>View Post</p>
+</div>
+
+<div class="container my-5 text-left">
+    <h2>@Model.Title</h2>
+    <p class="small">By @Model.Author, Last updated @Model.UpdatedDate</p>
+
+    <div class="my-3">
+        <pre>@Model.Content</pre>
+    </div>
+
+    <a asp-action="Index">Go back</a>
+</div>
