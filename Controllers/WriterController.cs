@@ -9,12 +9,12 @@ using Microsoft.Extensions.Logging;
 
 namespace Alejof.SimpleBlog.Controllers
 {
-    public class HomeController : Controller
+    public class WriterController : Controller
     {
         private readonly Services.IPostService _postService;
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(
+        public WriterController(
             Services.IPostService postService,
             ILogger<HomeController> logger)
         {
@@ -29,37 +29,43 @@ namespace Alejof.SimpleBlog.Controllers
 
             return View(
                 posts
-                    .Where(p => p.Status == Services.Models.PostStatus.Published)
+                    .Where(p => string.IsNullOrEmpty(p.Status) || p.Status == Services.Models.PostStatus.Draft)
                     .OrderByDescending(c => c.UpdatedDate)
                     .Select(p => Models.PostIndexViewModel.FromModel(p)));
         }
 
-        [HttpGet, Route("post/{slug}")]
-        public async Task<IActionResult> Detail(string slug)
+        [HttpGet, Route("edit/{slug?}")]
+        public async Task<IActionResult> Edit([FromRoute]string slug)
         {
+            if (string.IsNullOrEmpty(slug))
+                return View();
+
             var post = await _postService.GetPost(slug);
             if (post == null) return NotFound();
 
             return View(
-                PostDetailViewModel.FromModel(post));
+                PostEditViewModel.FromModel(post));
         }
 
-        [HttpPost, Route("post/{slug?}/comment")]
-        public async Task<IActionResult> PostComment([FromRoute]string slug, [FromForm]PostCommentViewModel commentViewModel)
+        [HttpPost, Route("edit/{slug?}")]
+        public async Task<IActionResult> PostEdit([FromRoute]string slug, [FromForm]PostEditViewModel postViewModel)
         {
             if (!string.IsNullOrEmpty(slug))
             {
-                var post = await _postService.GetPost(slug);
-                if (post == null) return NotFound();
+                var existingPost = await _postService.GetPost(slug);
+                if (existingPost == null) return NotFound();
             }
 
-            var result = await _postService.AddComment(slug, commentViewModel.AsModel());
+            var post = postViewModel.AsModel();
+            post.Status = Services.Models.PostStatus.Draft;
+
+            var result = await _postService.SavePost(post);
             if (!result.Success)
             {
                 // TODO: Show result.Error;
             }
 
-            return Redirect($"/post/{slug}");
+            return RedirectToAction(nameof(Index));
         }
     }
 }

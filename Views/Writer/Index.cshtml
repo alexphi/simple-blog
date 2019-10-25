@@ -6,7 +6,7 @@
 
 <div class="text-center">
     <h1 class="display-4">AlejoF Simple Blog</h1>
-    <p>Latest Posts</p>
+    <p>Drafts</p>
 </div>
 
 <div class="container my-5 text-left">
@@ -18,26 +18,19 @@
                 <p class="small">by @post.Author</p>
                 <p class="card-text"><pre>@post.Content</pre></p>
 
-                <a asp-action="Detail" asp-route-slug="@post.Slug">Read more</a>
+                <a asp-action="Detail" asp-controller="Home" asp-route-slug="@post.Slug">Read more</a>
+                <a asp-action="Edit" asp-route-slug="@post.Slug" class="d-inline-block mx-3">Edit</a>
             </div>
         </div>
     }
     @if (!Model.Any())
     {
         <div class="alert alert-warning" role="alert">
-            No posts (yet)
+            No drafts (yet)
         </div>
     }
     <div class="py-5">
-        @if (User.IsInRole("Writer"))
-        {
-            <a asp-action="Index" asp-controller="Writer" class="btn btn-primary">View drafts</a>
-            <a asp-action="Edit" asp-controller="Writer" class="btn btn-info">New Draft</a>
-        }
-        @if (User.IsInRole("Editor"))
-        {
-            <a asp-action="Index" asp-controller="Editor" class="btn btn-primary">View pending posts</a>
-        }
+        <a asp-action="Edit" class="btn btn-primary">New Post</a>
     </div>
 </div>
 

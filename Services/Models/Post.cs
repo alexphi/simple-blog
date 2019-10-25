@@ -10,6 +10,8 @@ namespace Alejof.SimpleBlog.Services.Models
         public string Content { get; set; }
         public string Author { get; set; }
         public DateTime UpdatedDate { get; set; }
+        public string Status { get; set;}
+        public DateTime? ApprovalDate { get; set;}
 
         public List<Comment> Comments { get; set; }
     }
