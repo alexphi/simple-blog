@@ -1,0 +1,41 @@
+﻿@model PostEditViewModel
+
+@{
+    ViewData["Title"] = "Edit Post";
+}
+
+<div class="text-center">
+    <h1 class="display-4">AlejoF Simple Blog</h1>
+    <p>Edit Post</p>
+</div>
+
+<div class="container my-5 text-left">
+    <form asp-action="PostEdit" asp-route-slug="@Model?.Slug" method="post">
+        <div class="form-group">
+            <label for="Slug">Slug</label>
+            @if (Model == null)
+            {
+                <input type="text" class="form-control" name="Slug" placeholder="Post Slug" value="@Model?.Slug">
+                <small class="form-text text-muted">Post identifier and url "segment"</small>
+            }
+            else
+            {
+                <input type="text" class="form-control-plaintext" name="Slug" placeholder="Post Slug" value="@Model?.Slug" readonly>
+            }                
+        </div>
+        <div class="form-group">
+            <label for="Title">Title</label>
+            <input type="text" class="form-control" name="Title" placeholder="Post Title" value="@Model?.Title">
+        </div>
+        <div class="form-group">
+            <label for="Author">Author Name</label>
+            <input type="text" class="form-control" name="Author" placeholder="Author Name" value="@Model?.Author">
+        </div>
+        <div class="form-group">
+            <label for="Content">Content</label>
+            <textarea class="form-control" name="Content" placeholder="Post Content" rows="5">@Model?.Content</textarea>
+            <small class="form-text text-muted">Last updated: @(Model?.UpdatedDate ?? "never")</small>
+        </div>
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+</div>

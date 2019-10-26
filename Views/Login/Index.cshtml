@@ -1,0 +1,21 @@
+@model LoginViewModel
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="text-center">
+    <h1 class="display-4">AlejoF Simple Blog</h1>
+    <p>Login</p>
+</div>
+
+<div class="container my-5 text-left">
+    <form asp-action="Login" method="post">
+        <div class="form-group">
+            <label for="Username">Username</label>
+            <input type="text" class="form-control" name="Title" placeholder="Username">
+            <small class="form-text text-muted">Use "Writer" or "Editor" to log in as a pre-defined role, or antging else to log in as an anonymous user.</small>
+        </div>
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+</div>
