@@ -13,4 +13,4 @@ This project is an ASP.NET Core 3.0 website, which uses a simple json file as ba
 
 There is no authentication, so the two types of users are "simulated" by navigating to the `/writer` and `/editor` routes (or using the navigation bar links)
 
-The project is built into a docker image and published to Azure as a container-based Web App. There are basically two reasons for this: 1, Azure does not support (as of now) 3.0 web apps, and 2, I wanted to learn how to use docker in Azure.
+The project is built into a docker image and published to Azure as a container-based Web App.
