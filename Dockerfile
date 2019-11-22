@@ -15,4 +15,4 @@ RUN dotnet publish -c Release -o /dist
 FROM base
 WORKDIR /app
 COPY --from=publish /dist .
-ENTRYPOINT ["dotnet", "simple-blog.dll"]
+ENTRYPOINT ["dotnet", "AlejoF.SimpleBlog.dll"]
