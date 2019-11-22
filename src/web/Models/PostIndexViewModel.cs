@@ -10,7 +10,7 @@ namespace Alejof.SimpleBlog.Models
         public string Author { get; set; }
         public string UpdatedDate { get; set; }
 
-        public static PostIndexViewModel FromModel(Services.Models.Post model) => new PostIndexViewModel
+        public static PostIndexViewModel FromModel(Data.Models.Post model) => new PostIndexViewModel
         {
             Slug = model.Slug,
             Title = model.Title,

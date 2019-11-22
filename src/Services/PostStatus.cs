@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Alejof.SimpleBlog.Services.Models
+namespace Alejof.SimpleBlog.Services
 {
     public static class PostStatus
     {

@@ -5,10 +5,10 @@ namespace Alejof.SimpleBlog.Services
 {
     public interface IPostService
     {
-        Task<List<Models.Post>> GetPosts();
+        Task<IList<Data.Models.Post>> GetPosts();
 
-        Task<Models.Post> GetPost(string slug);
-        Task<(bool Success, string Error)> SavePost(Models.Post post);
-        Task<(bool Success, string Error)> AddComment(string slug, Models.Comment comment);
+        Task<Data.Models.Post> GetPost(string slug);
+        Task<(bool Success, string Error)> SavePost(Data.Models.Post post);
+        Task<(bool Success, string Error)> AddComment(string slug, Data.Models.Comment comment);
     }
 }

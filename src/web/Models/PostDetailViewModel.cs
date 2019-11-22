@@ -14,14 +14,14 @@ namespace Alejof.SimpleBlog.Models
 
         public IEnumerable<PostDetailCommentViewModel> Comments { get; set; }
 
-        public static PostDetailViewModel FromModel(Services.Models.Post model) => new PostDetailViewModel
+        public static PostDetailViewModel FromModel(Data.Models.Post model) => new PostDetailViewModel
         {
             Slug = model.Slug,
             Title = model.Title,
             Content = model.Content,
             Author = model.Author,
             UpdatedDate = model.UpdatedDate.ToString("yyyy-MM-dd"),
-            Comments = (model.Comments ?? Enumerable.Empty<Services.Models.Comment>())
+            Comments = (model.Comments ?? Enumerable.Empty<Data.Models.Comment>())
                 .OrderByDescending(c => c.Date)
                 .Select(c => PostDetailCommentViewModel.FromModel(c)),
         };
@@ -34,7 +34,7 @@ namespace Alejof.SimpleBlog.Models
         public string Email { get; set; }
         public string Date { get; set; }
 
-        public static PostDetailCommentViewModel FromModel(Services.Models.Comment model) => new PostDetailCommentViewModel
+        public static PostDetailCommentViewModel FromModel(Data.Models.Comment model) => new PostDetailCommentViewModel
         {
             Content = model.Content,
             Author = model.Author,

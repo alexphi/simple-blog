@@ -1,6 +1,6 @@
 using System;
 
-namespace Alejof.SimpleBlog.Services.Models
+namespace Alejof.SimpleBlog.Data.Models
 {
     public class Comment
     {

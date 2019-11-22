@@ -23,7 +23,12 @@ namespace Alejof.SimpleBlog
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<Services.IPostService, Services.Impl.ContentFilePostService>();
+            services.AddScoped<Data.IPostStore>(svc => {
+                var env = svc.GetRequiredService<IWebHostEnvironment>();
+                return new Data.Impl.JsonFilePostStore(env.WebRootPath);
+            });
+            
+            services.AddScoped<Services.IPostService, Services.Impl.StorePostService>();
 
             services.AddControllersWithViews();
         }
@@ -39,11 +44,9 @@ namespace Alejof.SimpleBlog
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-            app.UseHttpsRedirection();
+            
             app.UseStaticFiles();
-
             app.UseRouting();
-
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

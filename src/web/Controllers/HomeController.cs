@@ -29,7 +29,7 @@ namespace Alejof.SimpleBlog.Controllers
 
             return View(
                 posts
-                    .Where(p => p.Status == Services.Models.PostStatus.Published)
+                    .Where(p => p.Status == Services.PostStatus.Published)
                     .OrderByDescending(c => c.UpdatedDate)
                     .Select(p => Models.PostIndexViewModel.FromModel(p)));
         }

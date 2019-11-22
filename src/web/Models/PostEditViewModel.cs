@@ -10,7 +10,7 @@ namespace Alejof.SimpleBlog.Models
         public string Author { get; set; }
         public string UpdatedDate { get; set; }
 
-        public static PostEditViewModel FromModel(Services.Models.Post model) => new PostEditViewModel
+        public static PostEditViewModel FromModel(Data.Models.Post model) => new PostEditViewModel
         {
             Slug = model.Slug,
             Title = model.Title,
@@ -19,7 +19,7 @@ namespace Alejof.SimpleBlog.Models
             UpdatedDate = model.UpdatedDate.ToString("yyyy-MM-dd"),
         };
 
-        public Services.Models.Post AsModel() => new Services.Models.Post
+        public Data.Models.Post AsModel() => new Data.Models.Post
         {
             Slug = this.Slug,
             Title = this.Title,

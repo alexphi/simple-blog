@@ -6,7 +6,7 @@ EXPOSE 80
 FROM mcr.microsoft.com/dotnet/core/sdk:3.0 AS build
 WORKDIR /
 COPY src/ src/
-WORKDIR /src
+WORKDIR /src/web
 RUN dotnet build -c Release -o /dist
 
 FROM build as publish

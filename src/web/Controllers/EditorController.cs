@@ -9,14 +9,14 @@ using Microsoft.Extensions.Logging;
 
 namespace Alejof.SimpleBlog.Controllers
 {
-    public class WriterController : Controller
+    public class EditorController : Controller
     {
         private readonly Services.IPostService _postService;
-        private readonly ILogger<WriterController> _logger;
+        private readonly ILogger<EditorController> _logger;
 
-        public WriterController(
+        public EditorController(
             Services.IPostService postService,
-            ILogger<WriterController> logger)
+            ILogger<EditorController> logger)
         {
             _postService = postService;
             _logger = logger;
@@ -29,35 +29,28 @@ namespace Alejof.SimpleBlog.Controllers
 
             return View(
                 posts
-                    .Where(p => string.IsNullOrEmpty(p.Status) || p.Status == Services.Models.PostStatus.Draft)
+                    .Where(p => p.Status == Services.PostStatus.Pending)
                     .OrderByDescending(c => c.UpdatedDate)
                     .Select(p => Models.PostIndexViewModel.FromModel(p)));
         }
 
-        [HttpGet, Route("edit/{slug?}")]
-        public async Task<IActionResult> Edit([FromRoute]string slug)
+        [HttpGet, Route("review/{slug?}")]
+        public async Task<IActionResult> Review([FromRoute]string slug)
         {
-            if (string.IsNullOrEmpty(slug))
-                return View();
-
             var post = await _postService.GetPost(slug);
             if (post == null) return NotFound();
 
-            return View(
-                PostEditViewModel.FromModel(post));
+            return View(PostEditViewModel.FromModel(post));
         }
 
-        [HttpPost, Route("edit/{slug?}")]
-        public async Task<IActionResult> PostEdit([FromRoute]string slug, [FromForm]PostEditViewModel postViewModel)
+        [HttpPost, Route("review/{slug?}/approve")]
+        public async Task<IActionResult> PostApprove([FromRoute]string slug)
         {
-            if (!string.IsNullOrEmpty(slug))
-            {
-                var existingPost = await _postService.GetPost(slug);
-                if (existingPost == null) return NotFound();
-            }
+            var post = await _postService.GetPost(slug);
+            if (post == null) return NotFound();
 
-            var post = postViewModel.AsModel();
-            post.Status = Services.Models.PostStatus.Draft;
+            post.Status = Services.PostStatus.Published;
+            post.ApprovalDate = DateTime.Now;
 
             var result = await _postService.SavePost(post);
             if (!result.Success)
@@ -68,22 +61,13 @@ namespace Alejof.SimpleBlog.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [HttpGet, Route("edit/{slug?}/publish")]
-        public async Task<IActionResult> Publish([FromRoute]string slug)
+        [HttpPost, Route("review/{slug?}/reject")]
+        public async Task<IActionResult> PostReject([FromRoute]string slug)
         {
             var post = await _postService.GetPost(slug);
             if (post == null) return NotFound();
 
-            return View(PostEditViewModel.FromModel(post));
-        }
-
-        [HttpPost, Route("edit/{slug?}/publish")]
-        public async Task<IActionResult> PostPublish([FromRoute]string slug)
-        {
-            var post = await _postService.GetPost(slug);
-            if (post == null) return NotFound();
-
-            post.Status = Services.Models.PostStatus.Pending;
+            post.Status = Services.PostStatus.Draft;
 
             var result = await _postService.SavePost(post);
             if (!result.Success)

@@ -9,7 +9,7 @@ namespace Alejof.SimpleBlog.Models
         public string Content { get; set; }
         public string Author { get; set; }
 
-        public Services.Models.Comment AsModel() => new Services.Models.Comment
+        public Data.Models.Comment AsModel() => new Data.Models.Comment
         {
             Content = this.Content,
             Author = this.Author,
