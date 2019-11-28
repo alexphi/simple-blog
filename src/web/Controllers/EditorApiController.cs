@@ -1,4 +1,6 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -46,7 +48,7 @@ namespace Alejof.SimpleBlog.Controllers
 
             var result = await _postService.SavePost(post);
             if (!result.Success)
-                return this.UnprocessableEntity();
+                return this.UnprocessableEntity(result.Error);
 
             return Ok();
         }
@@ -61,7 +63,7 @@ namespace Alejof.SimpleBlog.Controllers
 
             var result = await _postService.SavePost(post);
             if (!result.Success)
-                return this.UnprocessableEntity();
+                return this.UnprocessableEntity(result.Error);
 
             return Ok();
         }

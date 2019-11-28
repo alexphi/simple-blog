@@ -1,3 +1,5 @@
+#nullable enable
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +22,7 @@ namespace Alejof.SimpleBlog.Services.Impl
 
         public Task<Post> GetPost(string slug) => this._postStore.GetPost(slug);
 
-        public async Task<(bool Success, string Error)> SavePost(Post post)
+        public async Task<(bool Success, string? Error)> SavePost(Post post)
         {
             Func<Post, Task<bool>> saveAction = p => this._postStore.CreatePost(p);
 
@@ -34,7 +36,7 @@ namespace Alejof.SimpleBlog.Services.Impl
             return (true, null);
         }
 
-        public async Task<(bool Success, string Error)> AddComment(string slug, Comment comment)
+        public async Task<(bool Success, string? Error)> AddComment(string slug, Comment comment)
         {
             var post = await this._postStore.GetPost(slug);
             if (post == null)

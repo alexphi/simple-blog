@@ -5,7 +5,6 @@
     <RootNamespace>Alejof.SimpleBlog</RootNamespace>
   </PropertyGroup>
 
-
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'simple_blog' ">
     <StartAction>Project</StartAction>
     <ApplicationURL>http://localhost:5000</ApplicationURL>
