@@ -15,11 +15,11 @@ namespace Alejof.SimpleBlog.Controllers
     public class EditorApiController : Controller
     {
         private readonly Services.IPostService _postService;
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<EditorApiController> _logger;
 
         public EditorApiController(
             Services.IPostService postService,
-            ILogger<HomeController> logger)
+            ILogger<EditorApiController> logger)
         {
             _postService = postService;
             _logger = logger;
@@ -38,10 +38,10 @@ namespace Alejof.SimpleBlog.Controllers
         }
 
         [HttpPost, Route("posts/{slug?}/approve")]
-        public async Task<IActionResult> PostApprove([FromRoute]string slug)
+        public async Task<IActionResult> Approve([FromRoute]string slug)
         {
             var post = await _postService.GetPost(slug);
-            if (post == null) return NotFound();
+            if (post?.Status != Services.PostStatus.Pending) return NotFound();
 
             post.Status = Services.PostStatus.Published;
             post.ApprovalDate = DateTime.Now;
@@ -57,7 +57,7 @@ namespace Alejof.SimpleBlog.Controllers
         public async Task<IActionResult> PostReject([FromRoute]string slug)
         {
             var post = await _postService.GetPost(slug);
-            if (post == null) return NotFound();
+            if (post?.Status != Services.PostStatus.Pending) return NotFound();
 
             post.Status = Services.PostStatus.Draft;
 

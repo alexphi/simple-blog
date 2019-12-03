@@ -42,6 +42,8 @@ namespace Alejof.SimpleBlog.Controllers
             var post = await _postService.GetPost(slug);
             if (post == null) return NotFound();
 
+            // TODO: Check post's status against user role i.e.: Unauthenticated should not see Drafts or Pending posts
+
             return View(
                 PostDetailViewModel.FromModel(post));
         }

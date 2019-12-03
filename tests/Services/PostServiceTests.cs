@@ -4,12 +4,12 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace Alejof.SimpleBlog.Tests
+namespace Alejof.SimpleBlog.Tests.Services
 {
     [TestClass]
-    public class PostServiceTest
+    public class PostServiceTests
     {
-        private Services.Impl.StorePostService _service = default!;
+        private SimpleBlog.Services.Impl.StorePostService _service = default!;
 
         private readonly IList<Data.Models.Post> _storage = new List<Data.Models.Post>
         {
@@ -37,11 +37,11 @@ namespace Alejof.SimpleBlog.Tests
             storeMock.Setup(m => m.DeletePost(It.IsAny<string>()))
                 .ReturnsAsync(true);
 
-            _service = new Services.Impl.StorePostService(storeMock.Object);
+            _service = new SimpleBlog.Services.Impl.StorePostService(storeMock.Object);
         }
 
         [TestMethod]
-        public async Task GetPosts_ShouldReturnAllPosts()
+        public async Task PostService_GetPosts_ShouldReturnAllPosts()
         {
             // Act
             var result = await _service.GetPosts();
@@ -51,7 +51,7 @@ namespace Alejof.SimpleBlog.Tests
         }
 
         [TestMethod]
-        public async Task GetPost_WithMatchingSlug_ShouldReturnPost()
+        public async Task PostService_GetPost_WithMatchingSlug_ShouldReturnPost()
         {
             // Arrange
             var post = _storage.Last();
@@ -64,7 +64,7 @@ namespace Alejof.SimpleBlog.Tests
         }
 
         [TestMethod]
-        public async Task GetPost_WithNonMatchingSlug_ShouldReturnNull()
+        public async Task PostService_GetPost_WithNonMatchingSlug_ShouldReturnNull()
         {
             // Act
             var result = await _service.GetPost("whatever");
@@ -74,7 +74,7 @@ namespace Alejof.SimpleBlog.Tests
         }
 
         [TestMethod]
-        public async Task SavePost_WithNewSlug_ShouldCreatePostAndReturnNullMessage()
+        public async Task PostService_SavePost_WithNewSlug_ShouldCreatePostAndReturnNullMessage()
         {
             // Arrange
             var postCount = _storage.Count;
@@ -90,7 +90,7 @@ namespace Alejof.SimpleBlog.Tests
         }
 
         [TestMethod]
-        public async Task SavePost_WithExistingSlug_ShouldUpdatePostAndReturnNullMessage()
+        public async Task PostService_SavePost_WithExistingSlug_ShouldUpdatePostAndReturnNullMessage()
         {
             // Arrange
             var post = _storage.Last();
@@ -107,7 +107,7 @@ namespace Alejof.SimpleBlog.Tests
         }
 
         [TestMethod]
-        public async Task AddComment_WithExistingSlug_ShouldAddCommentAndReturnNullMessage()
+        public async Task PostService_AddComment_WithExistingSlug_ShouldAddCommentAndReturnNullMessage()
         {
             // Arrange
             var post = _storage.Last();
@@ -124,7 +124,7 @@ namespace Alejof.SimpleBlog.Tests
         }
 
         [TestMethod]
-        public async Task AddComment_WithNonExistingSlug_ShouldReturnFalseAndMessage()
+        public async Task PostService_AddComment_WithNonExistingSlug_ShouldReturnFalseAndMessage()
         {
             // Arrange
             var comment = new Data.Models.Comment();

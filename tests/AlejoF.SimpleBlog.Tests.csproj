@@ -2,12 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <RootNamespace>Alejof.SimpleBlog.Services</RootNamespace>
+    <RootNamespace>Alejof.SimpleBlog.Tests</RootNamespace>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
     <PackageReference Include="Moq" Version="4.13.1" />
     <PackageReference Include="MSTest.TestAdapter" Version="1.4.0" />
@@ -18,6 +20,7 @@
   <ItemGroup>
     <ProjectReference Include="..\src\services\AlejoF.SimpleBlog.Services.csproj" />
     <ProjectReference Include="..\src\data\AlejoF.SimpleBlog.Data.csproj" />
+    <ProjectReference Include="..\src\web\AlejoF.SimpleBlog.csproj" />
   </ItemGroup>
 
 </Project>
