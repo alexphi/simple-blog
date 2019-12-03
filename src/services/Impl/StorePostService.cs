@@ -28,7 +28,17 @@ namespace Alejof.SimpleBlog.Services.Impl
 
             var existingPost = await this._postStore.GetPost(post.Slug);
             if (existingPost != null)
+            {
+                // Merge and update
+                existingPost.Author = post.Author ?? existingPost.Author;
+                existingPost.Comments = post.Comments ?? existingPost.Comments;
+                existingPost.Content = post.Content ?? existingPost.Content;
+                existingPost.Status = post.Status ?? existingPost.Status;
+                existingPost.Title = post.Title ?? existingPost.Title;
+
+                post = existingPost;
                 saveAction = p => this._postStore.UpdatePost(p);
+            }
 
             post.UpdatedDate = DateTime.Now;
             await saveAction(post);
