@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <RootNamespace>Alejof.SimpleBlog</RootNamespace>
   </PropertyGroup>
 
@@ -11,6 +11,9 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\services\AlejoF.SimpleBlog.Services.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Views\Login\Index.cshtml" />
   </ItemGroup>
 
 </Project>

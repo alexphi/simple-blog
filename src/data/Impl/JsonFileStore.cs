@@ -16,8 +16,9 @@ namespace Alejof.SimpleBlog.Data.Impl
 
     public static class JsonFileStoreExtensions
     {
-        public const string DataFolder = "data";
-        public static string GetFilePath(this IJsonFileStore service) => Path.Combine(service.RootPath, DataFolder, service.FileName);
+        private const string DataFolder = "data";
+        private static string GetFilePath(this IJsonFileStore service)
+            => Path.Combine(service.RootPath, DataFolder, service.FileName);
 
         public static async Task<T> ReadContent<T>(this IJsonFileStore service, string defaultContent = "{}")
             where T : class

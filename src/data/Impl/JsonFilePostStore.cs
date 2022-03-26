@@ -19,16 +19,16 @@ namespace Alejof.SimpleBlog.Data.Impl
 
         public Task<IList<Post>> GetPosts() => this.ReadContent<IList<Post>>(defaultContent: "[]");
 
-        public async Task<Post> GetPost(string slug)
+        public async Task<Post?> GetPost(string slug)
         {
             var posts = await this.GetPosts();
-            return FindPost(posts, slug);
+            return posts.FindBySlug(slug);
         }
 
         public async Task<bool> CreatePost(Post post)
         {
             var posts = await this.GetPosts();
-            var existingPost = FindPost(posts, post.Slug);
+            var existingPost = posts.FindBySlug(post.Slug);
 
             if (existingPost != null)
                 return false;
@@ -42,7 +42,7 @@ namespace Alejof.SimpleBlog.Data.Impl
         public async Task<bool> UpdatePost(Post post)
         {
             var posts = await this.GetPosts();
-            var existingPost = FindPost(posts, post.Slug);
+            var existingPost = posts.FindBySlug(post.Slug);
 
             if (existingPost == null)
                 return false;
@@ -57,7 +57,7 @@ namespace Alejof.SimpleBlog.Data.Impl
         public async Task<bool> DeletePost(string slug)
         {
             var posts = await this.GetPosts();
-            var existingPost = FindPost(posts, slug);
+            var existingPost = posts.FindBySlug(slug);
 
             if (existingPost == null)
                 return false;
@@ -67,7 +67,11 @@ namespace Alejof.SimpleBlog.Data.Impl
             await this.UpdateContent(posts);
             return true;
         }
+    }
 
-        private Post FindPost(IList<Post> posts, string slug) => posts.FirstOrDefault(p => string.Equals(p.Slug, slug, System.StringComparison.OrdinalIgnoreCase));
+    public static class PostEnumerableExtensions
+    {
+        public static Post? FindBySlug(this IEnumerable<Post> posts, string slug)
+            => posts.FirstOrDefault(p => string.Equals(p.Slug, slug, System.StringComparison.OrdinalIgnoreCase));
     }
 }

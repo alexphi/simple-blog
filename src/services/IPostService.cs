@@ -9,7 +9,7 @@ namespace Alejof.SimpleBlog.Services
     {
         Task<IList<Data.Models.Post>> GetPosts();
 
-        Task<Data.Models.Post> GetPost(string slug);
+        Task<Data.Models.Post?> GetPost(string slug);
         Task<(bool Success, string? Error)> SavePost(Data.Models.Post post);
         Task<(bool Success, string? Error)> AddComment(string slug, Data.Models.Comment comment);
     }

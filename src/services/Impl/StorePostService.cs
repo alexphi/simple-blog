@@ -20,28 +20,31 @@ namespace Alejof.SimpleBlog.Services.Impl
 
         public Task<IList<Post>> GetPosts() => this._postStore.GetPosts();
 
-        public Task<Post> GetPost(string slug) => this._postStore.GetPost(slug);
+        public Task<Post?> GetPost(string slug) => this._postStore.GetPost(slug);
 
         public async Task<(bool Success, string? Error)> SavePost(Post post)
         {
             Func<Post, Task<bool>> saveAction = p => this._postStore.CreatePost(p);
 
-            var existingPost = await this._postStore.GetPost(post.Slug);
-            if (existingPost != null)
+            var postToSave = await this._postStore.GetPost(post.Slug);
+            if (postToSave == null)
+            {
+                postToSave = post;
+            }
+            else
             {
                 // Merge and update
-                existingPost.Author = post.Author ?? existingPost.Author;
-                existingPost.Comments = post.Comments ?? existingPost.Comments;
-                existingPost.Content = post.Content ?? existingPost.Content;
-                existingPost.Status = post.Status ?? existingPost.Status;
-                existingPost.Title = post.Title ?? existingPost.Title;
-
-                post = existingPost;
+                postToSave.Author = post.Author ?? postToSave.Author;
+                postToSave.Comments = post.Comments ?? postToSave.Comments;
+                postToSave.Content = post.Content ?? postToSave.Content;
+                postToSave.Status = post.Status ?? postToSave.Status;
+                postToSave.Title = post.Title ?? postToSave.Title;
+                
                 saveAction = p => this._postStore.UpdatePost(p);
             }
 
-            post.UpdatedDate = DateTime.Now;
-            await saveAction(post);
+            postToSave.UpdatedDate = DateTime.Now;
+            await saveAction(postToSave);
 
             return (true, null);
         }
@@ -52,9 +55,7 @@ namespace Alejof.SimpleBlog.Services.Impl
             if (post == null)
                 return (false, "Post not found");
 
-            if (post.Comments == null)
-                post.Comments = new List<Comment>();
-                
+            post.Comments ??= new List<Comment>();
             post.Comments.Add(comment);
             await this._postStore.UpdatePost(post);
 

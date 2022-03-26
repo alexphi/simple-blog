@@ -9,7 +9,7 @@ Part 2: Build a REST API to manage the posts as an Editor user. The API must exp
 
 *Project Specifics*
 
-This project is an ASP.NET Core 3.0 website, which uses a simple json file as backing storage for posts and comments.
+This project is an ASP.NET Core 6.0 website, which uses a simple json file as backing storage for posts and comments.
 
 There is no authentication, so the two types of users are "simulated" by navigating to the `/writer` and `/editor` routes (or using the navigation bar links)
 
